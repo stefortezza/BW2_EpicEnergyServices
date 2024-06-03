@@ -1,2 +1,4 @@
-package it.epicode.BW2_EpicEnergyServices.Entity;public class Client {
+package it.epicode.BW2_EpicEnergyServices.Entity;
+
+public class Client {
 }
