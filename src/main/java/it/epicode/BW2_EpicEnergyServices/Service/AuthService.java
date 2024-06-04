@@ -1,6 +1,9 @@
 package it.epicode.BW2_EpicEnergyServices.Service;
 
+import it.epicode.BW2_EpicEnergyServices.Dto.UserLoginDto;
+
 import it.epicode.BW2_EpicEnergyServices.Entity.User;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.UnauthorizedException;
 import it.epicode.BW2_EpicEnergyServices.Security.JwtTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,6 +1,8 @@
 package it.epicode.BW2_EpicEnergyServices.Service;
 
+import it.epicode.BW2_EpicEnergyServices.Dto.TownDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Town;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.TownNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.TownRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,11 @@ public class TownService {
     public String saveTown(TownDto townDto) {
         Town town = new Town();
         town.setTownName(townDto.getTownName());
-        town.setRegion(townDto.getRegion());
+        town.setProvince(townDto.getProvince());
 
         townRepository.save(town);
 
-        return "Town with id " + town.getId() + " correctly saved!";
+        return "Town with id " + town.getTownId() + " correctly saved!";
     }
 
     public List<Town> getAllTown() {
@@ -32,16 +34,16 @@ public class TownService {
         return townRepository.findById(id);
     }
 
-    public Town updateTown(int id, TownDto townDto) {
+    public String updateTown(int id, TownDto townDto) {
         Optional<Town> townOptional = getTownById(id);
         if (townOptional.isPresent()) {
             Town town = new Town();
             town.setTownName(townDto.getTownName());
-            town.setRegion(townDto.getRegion());
+            town.setProvince(townDto.getProvince());
 
             townRepository.save(town);
 
-            return "Town with id " + town.getId() + " correctly saved!";
+            return "Town with id " + town.getTownId() + " correctly saved!";
 
         } else {
             throw new TownNotFoundException("Town with id=" + id + " not found!");

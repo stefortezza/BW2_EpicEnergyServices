@@ -26,5 +26,5 @@ public class UserDto {
     @NotBlank
     @Size(min = 1, max = 15)
     private String surname;
-
+    private String avatar;
 }

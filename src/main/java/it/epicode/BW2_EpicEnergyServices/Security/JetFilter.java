@@ -1,5 +1,9 @@
 package it.epicode.BW2_EpicEnergyServices.Security;
 
+import it.epicode.BW2_EpicEnergyServices.Entity.User;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.UnauthorizedException;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.UserNotFoundException;
+import it.epicode.BW2_EpicEnergyServices.Service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

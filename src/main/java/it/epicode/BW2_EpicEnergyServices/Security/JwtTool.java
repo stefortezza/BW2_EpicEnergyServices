@@ -2,6 +2,8 @@ package it.epicode.BW2_EpicEnergyServices.Security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import it.epicode.BW2_EpicEnergyServices.Entity.User;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +22,7 @@ public class JwtTool {
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + duration))
-                .subject(String.valueOf(user.getId()))
+                .subject(String.valueOf(user.getUserId()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }
@@ -38,4 +40,5 @@ public class JwtTool {
         return Integer.parseInt(Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .build().parseSignedClaims(token).getPayload().getSubject());
     }
+
 }

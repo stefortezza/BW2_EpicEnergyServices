@@ -15,6 +15,7 @@ public class Town {
     private Province province;
     private String townName;
 
+
     @OneToMany(mappedBy = "town")
     private List<Address> addressList;
 }

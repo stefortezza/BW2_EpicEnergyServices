@@ -2,6 +2,7 @@ package it.epicode.BW2_EpicEnergyServices.Service;
 
 import it.epicode.BW2_EpicEnergyServices.Dto.AddressDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Address;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.AddressNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class AddressService {
         } else {
             throw new AddressNotFoundException("Address with id=" + id + " not found!");
         }
+        return addressOptional.get();
     }
 
     public String deleteAddress(int id) {

@@ -2,6 +2,7 @@ package it.epicode.BW2_EpicEnergyServices.Service;
 
 import it.epicode.BW2_EpicEnergyServices.Dto.ClientDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Client;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.ClientNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,14 +54,14 @@ public class ClientService {
         if (clientOptional.isPresent()) {
             return clientOptional.get();
         } else {
-            throw new ClientNotFoundException("Client with email=" + email + " not found!"); //ERRORE UTENTE NON TROVATO
+            throw new ClientNotFoundException("Client with email=" + email + " not found!");
         }
     }
 
     public Client updateClient(int id, ClientDto clientDto) {
         Optional<Client> clientOptional = getClientById(id);
         if (clientOptional.isPresent()) {
-            Client client = new Client();
+            Client client = clientOptional.get();
             client.setSocietyName(clientDto.getSocietyName());
             client.setClientType(clientDto.getClientType());
             client.setEmail(clientDto.getEmail());
@@ -78,13 +79,15 @@ public class ClientService {
             client.setLegalAddress(clientDto.getLegaleAddress());
             client.setHeadquartesAddress(clientDto.getHeadquartesAddress());
             clientRepository.save(client);
+            return client;
         } else {
             throw new ClientNotFoundException("Client with id=" + id + " not found!");
         }
+    }
 
     public String deleteClient(int id) {
-        Optional<Client> clientOptional1 = getClientById(id);
-        if (clientOptional1.isPresent()) {
+        Optional<Client> clientOptional = getClientById(id);
+        if (clientOptional.isPresent()) {
             clientRepository.deleteById(id);
             return "Client with id=" + id + " correctly deleted!";
         } else {

@@ -1,6 +1,8 @@
 package it.epicode.BW2_EpicEnergyServices.Service;
 
+import it.epicode.BW2_EpicEnergyServices.Dto.ProvinceDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Province;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.ProvinceNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class ProvinceService {
 
         provinceRepository.save(province);
 
-        return "Province with id " + province.getId() + " correctly saved!";
+        return "Province with id " + province.getProvinceId() + " correctly saved!";
     }
 
     public List<Province> getAllProvince() {
@@ -32,7 +34,7 @@ public class ProvinceService {
         return provinceRepository.findById(id);
     }
 
-    public Province updateProvince(int id, ProvinceDto provinceDto) {
+    public String updateProvince(int id, ProvinceDto provinceDto) {
         Optional<Province> provinceOptional = getProvinceById(id);
         if (provinceOptional.isPresent()) {
             Province province = new Province();
@@ -41,7 +43,7 @@ public class ProvinceService {
 
             provinceRepository.save(province);
 
-            return "Province with id " + province.getId() + " correctly saved!";
+            return "Province with id " + province.getProvinceId() + " correctly saved!";
 
         } else {
             throw new ProvinceNotFoundException("Province with id=" + id + " not found!");

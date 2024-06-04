@@ -1,9 +1,16 @@
 package it.epicode.BW2_EpicEnergyServices.Service;
 
+import it.epicode.BW2_EpicEnergyServices.Dto.UserDto;
+import it.epicode.BW2_EpicEnergyServices.Entity.User;
+import it.epicode.BW2_EpicEnergyServices.Enums.Role;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.UserNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,7 +35,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        return "L'utente with id " + user.getId() + " correctly saved!";
+        return "L'utente with id " + user.getUserId() + " correctly saved!";
     }
 
     public List<User> getAllUsers() {

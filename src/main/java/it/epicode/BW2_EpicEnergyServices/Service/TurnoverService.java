@@ -2,6 +2,7 @@ package it.epicode.BW2_EpicEnergyServices.Service;
 
 import it.epicode.BW2_EpicEnergyServices.Dto.TurnoverDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Turnover;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.TurnoverNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.TurnoverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class TurnoverService {
         return turnoverRepository.findById(id);
     }
 
-    public Turnover updateTurnover(int id, TurnoverDto turnoverDto {
+    public String updateTurnover(int id, TurnoverDto turnoverDto){
         Optional<Turnover> turnoverOptional = getTurnoverById(id);
         if (turnoverOptional.isPresent()) {
             Turnover turnover = new Turnover();
