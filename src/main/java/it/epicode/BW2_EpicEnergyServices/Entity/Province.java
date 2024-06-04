@@ -4,6 +4,8 @@ package it.epicode.BW2_EpicEnergyServices.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class Province {
@@ -12,9 +14,8 @@ public class Province {
     @GeneratedValue
     private int provinceId;
 
-    @OneToOne
-    @JoinColumn(name = "town_id")
-    private Town town;
+    @OneToMany(mappedBy="province")
+    private List<Town> town;
 
     private String acronym;
 

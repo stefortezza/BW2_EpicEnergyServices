@@ -11,8 +11,11 @@ public class Town {
     @Id
     @GeneratedValue
     private int townId;
-    @OneToOne(mappedBy = "town")
+
+    @ManyToOne
+    @JoinColumn(name = "province_id")
     private Province province;
+
     private String townName;
 
 

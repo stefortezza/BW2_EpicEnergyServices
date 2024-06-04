@@ -15,13 +15,11 @@ public class Address {
     private String street;
     private String number;
     private int cap;
-    @OneToMany(mappedBy = "legalAddress")
-    private List<Address> legalAddressList;
-    @OneToMany(mappedBy = "headquartesAddress")
-    private List<Address> headquartesAddressList;
     @ManyToOne
     @JoinColumn(name="town_id")
     private Town town;
 
-
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 }

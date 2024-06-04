@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,12 +29,11 @@ public class Client {
     private String contactSurname;
     private long contactPhone;
     private String societyLogo;
-    @ManyToOne
-    @JoinColumn(name="legal_address_id")
-    private Address legalAddress;
-    @ManyToOne
-    @JoinColumn(name="headquartes_address_id")
-    private Address headquartesAddress;
+
+    @OneToMany(mappedBy = "client")
+    private List<Address> address;
+
+
 
 
 }
