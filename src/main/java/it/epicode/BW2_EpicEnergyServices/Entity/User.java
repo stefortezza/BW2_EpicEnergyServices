@@ -19,11 +19,13 @@ public class User implements UserDetails {
     @GeneratedValue
     private int userId;
     private String username;
+    private String email;
     private String password;
     private String name;
     private String surname;
     private String avatar;
     private Role role;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

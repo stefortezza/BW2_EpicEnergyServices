@@ -1,9 +1,7 @@
 package it.epicode.BW2_EpicEnergyServices.Entity;
 
 import it.epicode.BW2_EpicEnergyServices.Enums.TurnoverState;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,6 +10,10 @@ import java.time.LocalDate;
 @Entity
 public class Turnover {
 
+@Id
+@GeneratedValue
+
+    private int id;
     private Long turnoverCode;
 
     private LocalDate date;
