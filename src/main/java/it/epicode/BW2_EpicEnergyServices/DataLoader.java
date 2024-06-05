@@ -25,6 +25,14 @@ public class DataLoader implements CommandLineRunner {
         } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
+
+        try {
+            townService.importTownsFromCSV("comuni-italiani.csv");
+        } catch (IOException | CsvException e) {
+            e.printStackTrace();
+        }
+
+        /*System.out.println(provinceService.getProvinceByName("Torino"));*/
     }
 }
 

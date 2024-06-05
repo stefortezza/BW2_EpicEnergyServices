@@ -110,4 +110,9 @@ public class ProvinceService {
         }
     }
 
+
+    public Province getProvinceByName(String name) {
+        Optional<Province> optionalProvince = provinceRepository.findByName(name);
+        return optionalProvince.orElseThrow(() -> new RuntimeException("Province not found"));
+    }
 }
