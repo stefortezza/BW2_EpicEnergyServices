@@ -21,4 +21,14 @@ public class Province {
 
     private String name;
 
+    @Override
+    public String toString() {
+        return "Province{" +
+                "provinceId=" + provinceId +
+                ", acronym='" + acronym + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
+
+
