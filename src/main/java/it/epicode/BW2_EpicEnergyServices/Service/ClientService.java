@@ -32,8 +32,7 @@ public class ClientService {
         client.setContactSurname(clientDto.getContactSurname());
         client.setContactPhone(clientDto.getContactPhone());
         client.setSocietyLogo(clientDto.getSocietyLogo());
-        client.setLegalAddress(clientDto.getLegaleAddress());
-        client.setHeadquartesAddress(clientDto.getHeadquartesAddress());
+        client.setAddress(clientDto.getAddress());
 
         clientRepository.save(client);
 
@@ -76,8 +75,7 @@ public class ClientService {
             client.setContactSurname(clientDto.getContactSurname());
             client.setContactPhone(clientDto.getContactPhone());
             client.setSocietyLogo(clientDto.getSocietyLogo());
-            client.setLegalAddress(clientDto.getLegaleAddress());
-            client.setHeadquartesAddress(clientDto.getHeadquartesAddress());
+            client.setAddress(clientDto.getAddress());
             clientRepository.save(client);
             return client;
         } else {

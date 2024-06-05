@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class ClientDto {
@@ -57,8 +58,7 @@ public class ClientDto {
     private String societyLogo;
 
     @NotNull
-    private Address legaleAddress;
+    private List<Address> address;
 
-    @NotNull
-    private Address headquartesAddress;
+
 }
