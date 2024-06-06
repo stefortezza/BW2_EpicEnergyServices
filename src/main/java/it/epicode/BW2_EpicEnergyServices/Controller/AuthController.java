@@ -21,12 +21,12 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/auth/register")
-    public String register(@RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
+    public void register(@RequestBody @Validated UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().stream().map(ObjectError::getDefaultMessage)
                     .reduce("", (s, s2) -> s + s2));
         }
-        return userService.saveUser(userDto);
+        userService.saveUser(userDto);
     }
 
     @PostMapping("/auth/login")

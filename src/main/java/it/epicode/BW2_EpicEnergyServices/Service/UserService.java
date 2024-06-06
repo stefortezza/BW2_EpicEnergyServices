@@ -24,7 +24,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    public String saveUser(UserDto userDto) {
+    public void saveUser(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
@@ -34,8 +34,7 @@ public class UserService {
         user.setAvatar(userDto.getAvatar());
 
         userRepository.save(user);
-
-        return "User with id " + user.getUserId() + " correctly saved!";
+        System.out.println("User with id " + user.getUserId() + " correctly saved!");
     }
 
     public Page<User> getAllUsers(int page, int size, String sortBy) {

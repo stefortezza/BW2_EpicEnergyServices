@@ -22,13 +22,13 @@ public class UserController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public String saveUser(@RequestBody @Validated UserDto user, BindingResult bindingResult) {
+    public void saveUser(@RequestBody @Validated UserDto user, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage())
                     .reduce("", (s, s2) -> s + s2));
         }
-        return userService.saveUser(user);
+        userService.saveUser(user);
     }
 
     @GetMapping("/users")
