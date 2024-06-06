@@ -1,6 +1,7 @@
 package it.epicode.BW2_EpicEnergyServices;
 
 import com.opencsv.exceptions.CsvException;
+import it.epicode.BW2_EpicEnergyServices.Service.ClientService;
 import it.epicode.BW2_EpicEnergyServices.Service.ProvinceService;
 import it.epicode.BW2_EpicEnergyServices.Service.TownService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private ProvinceService provinceService;
 
+    @Autowired
+    private ClientService clientService;
+
     @Override
     public void run(String... args) throws Exception {
         try {
@@ -32,6 +36,7 @@ public class DataLoader implements CommandLineRunner {
             e.printStackTrace();
         }
 
+        /*System.out.println(clientService.orderClientsByName(""));*/
         /*System.out.println(provinceService.getProvinceByName("Torino"));*/
     }
 }

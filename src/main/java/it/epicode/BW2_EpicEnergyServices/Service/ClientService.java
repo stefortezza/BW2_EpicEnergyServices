@@ -83,4 +83,20 @@ public class ClientService {
         clientRepository.deleteById(id);
         return "Client with id=" + id + " correctly deleted!";
     }
+
+    public List<Client> orderClientsByName() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.ASC, "societyName"));
+    }
+
+    public List<Client> orderClientsByTotalSales() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "totalSales"));
+    }
+
+    public List<Client> orderClientsByDate() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "addDate"));
+    }
+
+    public List<Client> orderClientsByLastContact() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "lastContact"));
+    }
 }
