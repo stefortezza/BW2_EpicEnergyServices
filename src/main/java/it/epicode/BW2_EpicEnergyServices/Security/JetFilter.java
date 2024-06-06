@@ -46,9 +46,8 @@ public class JetFilter extends OncePerRequestFilter {
         //sicurezza!
         int userId = jwtTool.getIdFromToken(token);
 
-        Optional<User> userOptional = userService.getUserById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+        User user = userService.getUserById(userId);
+        if (user != null) {
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

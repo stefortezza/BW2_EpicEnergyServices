@@ -19,11 +19,6 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping
-    public String welcome() {
-        return "Welcome!";
-    }
-
     @PostMapping("/clients")
     @ResponseStatus(HttpStatus.CREATED)
     public String saveClient(@RequestBody @Validated ClientDto client, BindingResult bindingResult) {

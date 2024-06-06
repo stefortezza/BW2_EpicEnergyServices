@@ -46,6 +46,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id " + id));
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email " + email));
+    }
+
+
     public String updateUser(int id, UserDto userDto) {
         User user = getUserById(id);
         user.setUsername(userDto.getUsername());

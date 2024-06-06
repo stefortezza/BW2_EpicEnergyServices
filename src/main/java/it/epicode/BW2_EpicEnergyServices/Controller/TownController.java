@@ -22,10 +22,6 @@ public class TownController {
     @Autowired
     private TownService townService;
 
-    @GetMapping
-    public String benvenuto() {
-        return "Welcome!";
-    }
 
     @PostMapping("/towns")
     @ResponseStatus(HttpStatus.CREATED)

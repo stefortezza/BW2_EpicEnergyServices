@@ -19,11 +19,6 @@ public class ProvinceController {
     @Autowired
     private ProvinceService provinceService;
 
-    @GetMapping
-    public String benvenuto() {
-        return "Welcome!";
-    }
-
     @PostMapping("/provinces")
     @ResponseStatus(HttpStatus.CREATED)
     public String saveProvince(@RequestBody @Validated ProvinceDto province, BindingResult bindingResult) {

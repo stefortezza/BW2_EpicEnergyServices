@@ -19,10 +19,6 @@ public class TurnoverController {
     @Autowired
     private TurnoverService turnoverService;
 
-    @GetMapping
-    public String welcome() {
-        return "Welcome!";
-    }
 
     @PostMapping("/turnovers")
     @ResponseStatus(HttpStatus.CREATED)

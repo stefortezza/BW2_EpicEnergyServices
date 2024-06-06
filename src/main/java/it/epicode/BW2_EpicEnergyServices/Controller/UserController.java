@@ -20,11 +20,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public String welcome() {
-        return "Welcome!";
-    }
-
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public String saveUser(@RequestBody @Validated UserDto user, BindingResult bindingResult) {
