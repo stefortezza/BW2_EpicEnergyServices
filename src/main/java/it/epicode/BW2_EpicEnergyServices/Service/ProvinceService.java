@@ -10,6 +10,10 @@ import it.epicode.BW2_EpicEnergyServices.Exceptions.ProvinceNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.ProvinceRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -34,39 +38,33 @@ public class ProvinceService {
         return "Province with id " + province.getProvinceId() + " correctly saved!";
     }
 
-    public List<Province> getAllProvince() {
-        return provinceRepository.findAll();
+    public Page<Province> getAllProvince(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return provinceRepository.findAll(pageable);
     }
 
-    public Optional<Province> getProvinceById(int id) {
-        return provinceRepository.findById(id);
+    public Province getProvinceById(int id) {
+        return provinceRepository.findById(id)
+                .orElseThrow(() -> new ProvinceNotFoundException("Province not found with id " + id));
     }
+
 
     public String updateProvince(int id, ProvinceDto provinceDto) {
-        Optional<Province> provinceOptional = getProvinceById(id);
-        if (provinceOptional.isPresent()) {
-            Province province = new Province();
-            province.setAcronym(provinceDto.getAcronym());
-            province.setName(provinceDto.getName());
+        Province province = getProvinceById(id); // Usa il metodo che non restituisce Optional
+        province.setAcronym(provinceDto.getAcronym());
+        province.setName(provinceDto.getName());
 
-            provinceRepository.save(province);
+        provinceRepository.save(province);
 
-            return "Province with id " + province.getProvinceId() + " correctly saved!";
-
-        } else {
-            throw new ProvinceNotFoundException("Province with id=" + id + " not found!");
-        }
+        return "Province with id " + province.getProvinceId() + " correctly saved!";
     }
 
     public String deleteProvince(int id) {
-        Optional<Province> provinceOptional = getProvinceById(id);
-        if (provinceOptional.isPresent()) {
-            provinceRepository.deleteById(id);
-            return "Province with id=" + id + " correctly deleted!";
-        } else {
-            throw new ProvinceNotFoundException("Province with id=" + id + " not found!");
-        }
+        Province province = getProvinceById(id); // Usa il metodo che non restituisce Optional
+        provinceRepository.deleteById(id);
+        return "Province with id=" + id + " correctly deleted!";
     }
+
 
     @Transactional
     public void importProvincesFromCSV(String filePath) throws IOException, CsvException {

@@ -11,6 +11,10 @@ import it.epicode.BW2_EpicEnergyServices.Exceptions.TownNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.TownRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -38,39 +42,35 @@ public class TownService {
         return "Town with id " + town.getTownId() + " correctly saved!";
     }
 
-    public List<Town> getAllTown() {
-        return townRepository.findAll();
+    public Page<Town> getAllTown(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return townRepository.findAll(pageable);
     }
 
-    public Optional<Town> getTownById(int id) {
-        return townRepository.findById(id);
+    public Town getTownById(int id) {
+        return townRepository.findById(id)
+                .orElseThrow(() -> new TownNotFoundException("Town not found with id " + id));
     }
 
-    public String updateTown(int id, TownDto townDto) {
-        Optional<Town> townOptional = getTownById(id);
-        if (townOptional.isPresent()) {
-            Town town = new Town();
-            town.setTownName(townDto.getTownName());
-            town.setProvince(townDto.getProvince());
+    public Town updateTown(int id, TownDto townDto) {
+        Town town = getTownById(id);
 
-            townRepository.save(town);
+        town.setTownName(townDto.getTownName());
+        town.setProvince(townDto.getProvince());
 
-            return "Town with id " + town.getTownId() + " correctly saved!";
+        townRepository.save(town);
 
-        } else {
-            throw new TownNotFoundException("Town with id=" + id + " not found!");
-        }
+        System.out.println("Town with id " + town.getTownId() + " correctly saved!");
+        return town;
     }
+
 
     public String deleteTown(int id) {
-        Optional<Town> townOptional = getTownById(id);
-        if (townOptional.isPresent()) {
-            townRepository.deleteById(id);
-            return "Town with id=" + id + " correctly deleted!";
-        } else {
-            throw new TownNotFoundException("Town with id=" + id + " not found!");
-        }
+        Town town = getTownById(id);
+        townRepository.deleteById(id);
+        return "Town with id=" + id + " correctly deleted!";
     }
+
 
     @Transactional
     public void importTownsFromCSV(String filePath) throws IOException, CsvException {
@@ -107,7 +107,6 @@ public class TownService {
                         town.setTownName(townName);
                         town.setProvince(province);
 
-                        // Salva la città nel repository
                         townRepository.save(town);
                     } else {
                         System.out.println("Province not found for row: " + Arrays.toString(row));
