@@ -1,6 +1,7 @@
 package it.epicode.BW2_EpicEnergyServices.Dto;
 
 import it.epicode.BW2_EpicEnergyServices.Entity.Address;
+import it.epicode.BW2_EpicEnergyServices.Entity.Client;
 import it.epicode.BW2_EpicEnergyServices.Entity.Town;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -23,10 +24,8 @@ public class AddressDto {
     @NotBlank
     @Min(5) @Max(5)
     private int cap;
-    @NotNull
-    private List<Address> legalAddressList;
-    @NotNull
-    private List<Address> headquartesAddressList;
+
+    private Client client;
     @NotNull
     private Town town;
 }

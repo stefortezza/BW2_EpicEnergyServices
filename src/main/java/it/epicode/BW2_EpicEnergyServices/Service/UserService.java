@@ -6,6 +6,10 @@ import it.epicode.BW2_EpicEnergyServices.Enums.Role;
 import it.epicode.BW2_EpicEnergyServices.Exceptions.UserNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,71 +22,48 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public String saveUser(UserDto userDto) {
         User user = new User();
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
         user.setAvatar(userDto.getAvatar());
-
-        user.setRole(Role.USER);
-
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         userRepository.save(user);
 
-        return "L'utente with id " + user.getUserId() + " correctly saved!";
+        return "User with id " + user.getUserId() + " correctly saved!";
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return userRepository.findAll(pageable);
     }
 
-    public Optional<User> getUserById(int id) {
-        return userRepository.findById(id);
+    public User getUserById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id " + id));
     }
 
-    public User getUserByEmail(String email) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
+    public String updateUser(int id, UserDto userDto) {
+        User user = getUserById(id);
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setAvatar(userDto.getAvatar());
 
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-            throw new UserNotFoundException("Utente with email=" + email + " not found!"); //ERRORE UTENTE NON TROVATO
-        }
-    }
+        userRepository.save(user);
 
-    public User updateUser(int id, UserDto userDto) {
-        Optional<User> userOptional = getUserById(id);
-        if (userOptional.isPresent()) {
-            User user = new User();
-            user.setName(userDto.getName());
-            user.setSurname(userDto.getSurname());
-            user.setUsername(userDto.getUsername());
-            user.setEmail(userDto.getEmail());
-            user.setAvatar(userDto.getAvatar());
-
-            user.setRole(Role.USER);
-
-            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-            return userRepository.save(user);
-        } else {
-            throw new UserNotFoundException("Utente with id=" + id + " not found!");
-        }
+        return "User with id " + user.getUserId() + " correctly updated!";
     }
 
     public String deleteUser(int id) {
-        Optional<User> userOptional = getUserById(id);
-        if (userOptional.isPresent()) {
-            userRepository.deleteById(id);
-            return "User with id=" + id + " correctly deleted!";
-        } else {
-            throw new UserNotFoundException("Utente with id=" + id + " not found!");
-        }
+        User user = getUserById(id);
+        userRepository.deleteById(id);
+        return "User with id=" + id + " correctly deleted!";
     }
 }
+

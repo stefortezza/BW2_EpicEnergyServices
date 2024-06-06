@@ -1,9 +1,9 @@
 package it.epicode.BW2_EpicEnergyServices.Controller;
 
-import it.epicode.BW2_EpicEnergyServices.Dto.UserDto;
-import it.epicode.BW2_EpicEnergyServices.Entity.User;
+import it.epicode.BW2_EpicEnergyServices.Dto.TurnoverDto;
+import it.epicode.BW2_EpicEnergyServices.Entity.Turnover;
 import it.epicode.BW2_EpicEnergyServices.Exceptions.BadRequestException;
-import it.epicode.BW2_EpicEnergyServices.Service.UserService;
+import it.epicode.BW2_EpicEnergyServices.Service.TurnoverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,58 +15,56 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
-
+public class TurnoverController {
     @Autowired
-    private UserService userService;
+    private TurnoverService turnoverService;
 
     @GetMapping
     public String welcome() {
         return "Welcome!";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/turnovers")
     @ResponseStatus(HttpStatus.CREATED)
-    public String saveUser(@RequestBody @Validated UserDto user, BindingResult bindingResult) {
+    public String saveTurnover(@RequestBody @Validated TurnoverDto turnover, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage())
                     .reduce("", (s, s2) -> s + s2));
         }
-        return userService.saveUser(user);
+        return turnoverService.saveTurnover(turnover);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/turnovers")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public Page<User> getAllUsers(
+    public Page<Turnover> getAllTurnovers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size,
-            @RequestParam(defaultValue = "userId") String sortBy) {
-        return userService.getAllUsers(page, size, sortBy);
+            @RequestParam(defaultValue = "turnoverId") String sortBy) {
+        return turnoverService.getAllTurnovers(page, size, sortBy);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/turnovers/{turnoverId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public User getUserById(@PathVariable int userId) {
-        return userService.getUserById(userId);
+    public Turnover getTurnoverById(@PathVariable int turnoverId) {
+        return turnoverService.getTurnoverById(turnoverId);
     }
 
-    @PutMapping(path = "/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/turnovers/{turnoverId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public @ResponseBody String updateUser(@PathVariable int userId, @RequestBody @Validated UserDto user, BindingResult bindingResult) {
+    public @ResponseBody String updateTurnover(@PathVariable int turnoverId, @RequestBody @Validated TurnoverDto turnover, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage())
                     .reduce("", (s, s2) -> s + s2));
         }
-        return userService.updateUser(userId, user);
+        return turnoverService.updateTurnover(turnoverId, turnover);
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/turnovers/{turnoverId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String deleteUser(@PathVariable int userId) {
-        return userService.deleteUser(userId);
+    public String deleteTurnover(@PathVariable int turnoverId) {
+        return turnoverService.deleteTurnover(turnoverId);
     }
 }
-

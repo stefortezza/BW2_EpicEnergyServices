@@ -4,9 +4,15 @@ import it.epicode.BW2_EpicEnergyServices.Dto.ClientDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Client;
 import it.epicode.BW2_EpicEnergyServices.Exceptions.ClientNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +24,21 @@ public class ClientService {
 
     public String saveClient(ClientDto clientDto) {
         Client client = new Client();
-        client.setFirstName(clientDto.getFirstName());
-        client.setLastName(clientDto.getLastName());
+        client.setSocietyName(clientDto.getSocietyName());
+        client.setClientType(clientDto.getClientType());
+        client.setVat(clientDto.getVat());
+        client.setEmail(clientDto.getEmail());
+        client.setAddDate(clientDto.getAddDate());
+        client.setLastContact(clientDto.getLastContact());
+        client.setTotalSales(clientDto.getTotalSales());
+        client.setPec(clientDto.getPec());
+        client.setPhoneNumber(clientDto.getPhoneNumber());
+        client.setContactEmail(clientDto.getContactEmail());
+        client.setContactName(clientDto.getContactName());
+        client.setContactSurname(clientDto.getContactSurname());
+        client.setContactPhone(clientDto.getContactPhone());
+        client.setSocietyLogo(clientDto.getSocietyLogo());
+        client.setAddress(clientDto.getAddress());
 
         clientRepository.save(client);
 
@@ -38,62 +57,30 @@ public class ClientService {
 
     public String updateClient(int id, ClientDto clientDto) {
         Client client = getClientById(id);
-        client.setFirstName(clientDto.getFirstName());
-        client.setLastName(clientDto.getLastName());
+        client.setSocietyName(clientDto.getSocietyName());
+        client.setClientType(clientDto.getClientType());
+        client.setVat(clientDto.getVat());
+        client.setEmail(clientDto.getEmail());
+        client.setAddDate(clientDto.getAddDate());
+        client.setLastContact(clientDto.getLastContact());
+        client.setTotalSales(clientDto.getTotalSales());
+        client.setPec(clientDto.getPec());
+        client.setPhoneNumber(clientDto.getPhoneNumber());
+        client.setContactEmail(clientDto.getContactEmail());
+        client.setContactName(clientDto.getContactName());
+        client.setContactSurname(clientDto.getContactSurname());
+        client.setContactPhone(clientDto.getContactPhone());
+        client.setSocietyLogo(clientDto.getSocietyLogo());
+        client.setAddress(clientDto.getAddress());
 
         clientRepository.save(client);
 
-        return "Client with id " + client.getClientId() + " correctly saved!";
+        return "Client with id " + client.getClientId() + " correctly updated!";
     }
 
     public String deleteClient(int id) {
         Client client = getClientById(id);
         clientRepository.deleteById(id);
         return "Client with id=" + id + " correctly deleted!";
-    }
-
-    @Transactional
-    public void importClientsFromCSV(String filePath) throws IOException, CsvException {
-        try (CSVReader csvReader = new CSVReaderBuilder(new FileReader(filePath))
-                .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
-                .build()) {
-
-            csvReader.skip(1);
-
-            List<String[]> rows = csvReader.readAll();
-
-            for (String[] row : rows) {
-                System.out.println("Raw row length: " + row.length);
-                System.out.println("Raw row: " + Arrays.toString(row));
-
-                for (int i = 0; i < row.length; i++) {
-                    row[i] = row[i].trim();
-                }
-
-                System.out.println("Trimmed row length: " + row.length);
-                System.out.println("Trimmed row: " + Arrays.toString(row));
-
-                if (row.length >= 2) {
-                    String firstName = row[0];
-                    String lastName = row[1];
-
-                    System.out.println("FirstName: " + firstName);
-                    System.out.println("LastName: " + lastName);
-
-                    Client client = new Client();
-                    client.setFirstName(firstName);
-                    client.setLastName(lastName);
-
-                    clientRepository.save(client);
-                } else {
-                    System.out.println("Skipped row due to insufficient length: " + Arrays.toString(row));
-                }
-            }
-        }
-    }
-
-    public Client getClientByLastName(String lastName) {
-        Optional<Client> optionalClient = clientRepository.findByLastName(lastName);
-        return optionalClient.orElseThrow(() -> new RuntimeException("Client not found"));
     }
 }

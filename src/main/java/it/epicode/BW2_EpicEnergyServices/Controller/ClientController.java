@@ -41,7 +41,7 @@ public class ClientController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size,
             @RequestParam(defaultValue = "clientId") String sortBy) {
-        return clientService.getAllClient(page, size, sortBy);
+        return clientService.getAllClients(page, size, sortBy);
     }
 
     @GetMapping("/clients/{clientId}")

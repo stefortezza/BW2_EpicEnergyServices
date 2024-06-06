@@ -5,10 +5,11 @@ import it.epicode.BW2_EpicEnergyServices.Entity.Address;
 import it.epicode.BW2_EpicEnergyServices.Exceptions.AddressNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.domain.Page;
 
 @Service
 public class AddressService {
@@ -21,43 +22,40 @@ public class AddressService {
         address.setStreet(addressDto.getStreet());
         address.setNumber(addressDto.getNumber());
         address.setCap(addressDto.getCap());
+        address.setClient(addressDto.getClient());
+        address.setTown(addressDto.getTown());
 
         addressRepository.save(address);
 
         return "Address with id " + address.getAddressId() + " correctly saved!";
     }
 
-    public List<Address> getAllAddress() {
-        return addressRepository.findAll();
+    public Page<Address> getAllAddresses(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return addressRepository.findAll(pageable);
     }
 
-    public Optional<Address> getAddressById(int id) {
-        return addressRepository.findById(id);
+    public Address getAddressById(int id) {
+        return addressRepository.findById(id)
+                .orElseThrow(() -> new AddressNotFoundException("Address not found with id " + id));
     }
 
-    public Address updateAddress(int id, AddressDto addressDto) {
-        Optional<Address> addressOptional = getAddressById(id);
-        if (addressOptional.isPresent()) {
-            Address address = new Address();
-            address.setStreet(addressDto.getStreet());
-            address.setNumber(addressDto.getNumber());
-            address.setCap(addressDto.getCap());
+    public String updateAddress(int id, AddressDto addressDto) {
+        Address address = getAddressById(id);
+        address.setStreet(addressDto.getStreet());
+        address.setNumber(addressDto.getNumber());
+        address.setCap(addressDto.getCap());
+        address.setClient(addressDto.getClient());
+        address.setTown(addressDto.getTown());
 
-            addressRepository.save(address);
+        addressRepository.save(address);
 
-        } else {
-            throw new AddressNotFoundException("Address with id=" + id + " not found!");
-        }
-        return addressOptional.get();
+        return "Address with id " + address.getAddressId() + " correctly updated!";
     }
 
     public String deleteAddress(int id) {
-        Optional<Address> addressOptional = getAddressById(id);
-        if (addressOptional.isPresent()) {
-            addressRepository.deleteById(id);
-            return "Address with id=" + id + " correctly deleted!";
-        } else {
-            throw new AddressNotFoundException("Address with id=" + id + " not found!");
-        }
+        Address address = getAddressById(id);
+        addressRepository.deleteById(id);
+        return "Address with id=" + id + " correctly deleted!";
     }
 }

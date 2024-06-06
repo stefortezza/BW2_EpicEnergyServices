@@ -16,6 +16,7 @@ public class Client {
     @GeneratedValue
     private int  clientId;
     private String societyName;
+    @Enumerated(EnumType.STRING)
     private ClientType clientType;
     private String vat;
     private String email;
