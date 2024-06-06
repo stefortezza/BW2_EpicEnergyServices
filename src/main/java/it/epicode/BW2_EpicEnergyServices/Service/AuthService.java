@@ -25,6 +25,7 @@ public class AuthService {
 
         if (passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
             return jwtTool.createToken(user);
+
         } else {
             throw new UnauthorizedException("Error in authorization, relogin!");
         }

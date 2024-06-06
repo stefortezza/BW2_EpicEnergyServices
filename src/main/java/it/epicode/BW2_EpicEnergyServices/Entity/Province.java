@@ -1,6 +1,7 @@
 package it.epicode.BW2_EpicEnergyServices.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class Province {
     private int provinceId;
 
     @OneToMany(mappedBy="province")
+    @JsonIgnore
     private List<Town> town;
 
     private String acronym;

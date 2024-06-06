@@ -14,7 +14,7 @@ public class TurnoverDto {
 
     @NotNull
     @Min(1)
-    @Max(25)
+
     private Long turnoverCode;
     @NotNull
     private LocalDate date;
@@ -22,6 +22,6 @@ public class TurnoverDto {
     private TurnoverState turnoverState;
     @NotNull
     @Min(1)
-    @Max(25)
+
     private double total;
 }
