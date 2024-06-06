@@ -22,4 +22,16 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "addressId=" + addressId +
+                ", street='" + street + '\'' +
+                ", number='" + number + '\'' +
+                ", cap=" + cap +
+                ", town=" + town +
+                ", client=" + client +
+                "}";
+    }
 }

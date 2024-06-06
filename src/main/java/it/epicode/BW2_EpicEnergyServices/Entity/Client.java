@@ -31,7 +31,7 @@ public class Client {
     private long contactPhone;
     private String societyLogo;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Address> address;
 
 

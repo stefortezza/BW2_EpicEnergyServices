@@ -21,7 +21,7 @@ public class UserDto {
     @Size(min = 3, max = 15)
     private String password;
     @NotBlank
-    @Size(min = 5, max = 10)
+    @Size(min = 2, max = 30)
     private String name;
     @NotBlank
     @Size(min = 1, max = 15)

@@ -2,7 +2,9 @@ package it.epicode.BW2_EpicEnergyServices.Service;
 
 import it.epicode.BW2_EpicEnergyServices.Dto.ClientDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.Client;
+import it.epicode.BW2_EpicEnergyServices.Entity.User;
 import it.epicode.BW2_EpicEnergyServices.Exceptions.ClientNotFoundException;
+import it.epicode.BW2_EpicEnergyServices.Exceptions.UserNotFoundException;
 import it.epicode.BW2_EpicEnergyServices.Repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,7 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
 
     public String saveClient(ClientDto clientDto) {
         Client client = new Client();
@@ -82,5 +87,52 @@ public class ClientService {
         Client client = getClientById(id);
         clientRepository.deleteById(id);
         return "Client with id=" + id + " correctly deleted!";
+    }
+
+    public Client getClientByEmail(String email) {
+        return clientRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email " + email));
+    }
+
+    public List<Client> orderClientsBySocietyName() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.ASC, "societyName"));
+    }
+
+    public List<Client> orderClientsByTotalSales() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "totalSales"));
+    }
+
+    public List<Client> orderClientsByDate() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "addDate"));
+    }
+
+    public List<Client> orderClientsByLastContact() {
+        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "lastContact"));
+    }
+
+    public Page<Client> filterClientsByTotalSalesGreaterThan(double totalSales, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("totalSales").descending());
+        return clientRepository.findByTotalSalesGreaterThan(totalSales, pageable);
+    }
+
+    public Page<Client> filterClientsByAddDateAfter(LocalDate addDate, int page) {
+
+            int size = 15; // Valore predefinito
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("addDate").descending());
+        return clientRepository.findByAddDateAfter(addDate, pageable);
+    }
+
+    public Page<Client> filterClientsByLastContactAfter(LocalDate lastContact, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastContact").descending());
+        return clientRepository.findByLastContactAfter(lastContact, pageable);
+    }
+
+    public Page<Client> filterClientsBySocietyNameContaining(String societyNamePart, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("societyName"));
+        return clientRepository.findBySocietyNameContainingIgnoreCase(societyNamePart, pageable);
     }
 }
